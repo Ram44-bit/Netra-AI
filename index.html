@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0b1822">
+  <meta name="description" content="NETRA helps describe a user-approved camera image with AI and spoken answers.">
+  <title>NETRA — See the scene through sound</title>
+  <link rel="stylesheet" href="styles.css">
+  <script src="config.js"></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to main content</a>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="NETRA home">
+      <span class="brand-mark" aria-hidden="true">N</span>
+      <span>NETRA<span class="brand-dot">.</span><small>VISUAL COMPANION</small></span>
+    </a>
+    <span class="status-pill"><span class="status-dot" aria-hidden="true"></span> Camera + AI prototype</span>
+  </header>
+
+  <main id="main" class="layout">
+    <section class="intro" aria-labelledby="page-title">
+      <p class="eyebrow">A MORE ACCESSIBLE VIEW OF YOUR WORLD</p>
+      <h1 id="page-title">Understand your<br><span>surroundings by sound.</span></h1>
+      <p class="intro-copy">Capture a scene, ask what matters to you, and hear a concise AI-generated description.</p>
+      <div class="feature-line" aria-label="Features">
+        <span>◉ Camera</span><span>◖ Voice</span><span>◎ Multilingual</span>
+      </div>
+    </section>
+
+    <section class="workspace" aria-label="NETRA camera assistant">
+      <div class="panel camera-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">STEP 01</p>
+            <h2>Capture a scene</h2>
+          </div>
+          <span class="step-number" aria-hidden="true">01</span>
+        </div>
+        <p class="muted">The camera starts only when you press the button and grant permission.</p>
+
+        <div class="camera-frame" id="cameraFrame">
+          <video id="camera" autoplay playsinline muted aria-label="Live camera preview"></video>
+          <div id="cameraPlaceholder" class="camera-placeholder">
+            <span class="camera-icon" aria-hidden="true">◎</span>
+            <strong>Your camera preview will appear here</strong>
+            <span>Point at a stationary scene</span>
+          </div>
+        </div>
+        <div class="button-row">
+          <button type="button" class="button button-secondary" id="startCamera">Start camera</button>
+          <button type="button" class="button button-quiet" id="stopCamera" disabled>Turn camera off</button>
+        </div>
+
+        <div class="or-divider"><span>OR USE A PHOTO</span></div>
+        <label class="upload-label" for="photoInput">Choose a photo from your phone</label>
+        <input id="photoInput" class="file-input" type="file" accept="image/jpeg,image/png,image/webp">
+        <p class="hint">JPEG, PNG or WebP · maximum 8 MB. Choose only a photo you are comfortable sending for AI analysis.</p>
+        <button type="button" class="button button-primary button-wide" id="capture" disabled>
+          <span aria-hidden="true">✦</span> Describe this scene
+        </button>
+      </div>
+
+      <div class="panel ask-panel">
+        <div class="panel-heading">
+          <div>
+            <p class="eyebrow">STEP 02</p>
+            <h2>Ask what matters</h2>
+          </div>
+          <span class="step-number" aria-hidden="true">02</span>
+        </div>
+
+        <label for="language">Response language</label>
+        <select id="language" class="control">
+          <option value="hi-IN">Hindi — हिन्दी</option>
+          <option value="en-US">English</option>
+          <option value="bn-IN">Bengali — বাংলা</option>
+        </select>
+
+        <label for="question">Your question</label>
+        <textarea id="question" class="control question-box" rows="3" maxlength="500">Mere aas-paas kya hai? Seedhi aur saaf bhasha mein batao.</textarea>
+        <div class="suggestions" aria-label="Example questions">
+          <button type="button" class="chip" data-question-hi="Mere saamne kya hai?" data-question-en="What is in front of me?" data-question-bn="আমার সামনে কী আছে?">In front of me</button>
+          <button type="button" class="chip" data-question-hi="Is tasveer mein kaun si cheezein dikh rahi hain?" data-question-en="What objects are visible?" data-question-bn="কী কী জিনিস দেখা যাচ্ছে?">Identify objects</button>
+          <button type="button" class="chip" data-question-hi="Darwaza kis taraf dikh raha hai?" data-question-en="Which side is the door on?" data-question-bn="দরজাটি কোন দিকে দেখা যাচ্ছে?">Find a door</button>
+        </div>
+
+        <div class="button-row">
+          <button type="button" class="button button-secondary" id="askVoice">Ask by voice</button>
+          <button type="button" class="button button-quiet" id="stopListening" disabled>Stop listening</button>
+        </div>
+        <p class="hint">Voice input depends on your browser. Typing always remains available.</p>
+
+        <div class="answer-heading">
+          <div>
+            <p class="eyebrow">STEP 03</p>
+            <h2>Listen to the answer</h2>
+          </div>
+          <span class="sound-icon" aria-hidden="true">♫</span>
+        </div>
+        <div id="status" class="status-message" role="status" aria-live="polite" aria-atomic="true">Ready. Start the camera or choose a photo.</div>
+        <div id="answer" class="answer-box" aria-live="polite" aria-atomic="true" tabindex="0">
+          Your description will appear here.
+        </div>
+        <div class="button-row">
+          <button type="button" class="button button-secondary" id="repeat" disabled>Repeat answer</button>
+          <button type="button" class="button button-quiet" id="stopSpeech" disabled>Stop speech</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice-grid" aria-label="Privacy and safety">
+      <article class="notice">
+        <span class="notice-icon" aria-hidden="true">◇</span>
+        <div><h2>Your privacy matters</h2><p>The chosen image is sent to the NETRA backend and AI provider for analysis. This prototype does not intentionally save images to a database. Provider processing terms still apply.</p></div>
+      </article>
+      <article class="notice notice-warning">
+        <span class="notice-icon" aria-hidden="true">!</span>
+        <div><h2>Important safety note</h2><p>NETRA can be wrong. Do not rely on it alone for walking, obstacle avoidance, traffic lights or road crossings. It is not a replacement for a white cane, guide dog or mobility training.</p></div>
+      </article>
+    </section>
+
+    <footer>
+      <span>NETRA · Early-access prototype</span>
+      <span>Made for access, with care.</span>
+    </footer>
+  </main>
+</body>
+</html>
